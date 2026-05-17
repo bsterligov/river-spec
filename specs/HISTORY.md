@@ -168,3 +168,7 @@ Fixed column filter popup position in Logs and Traces views by adding `stackKey:
 ### 2026-05-17 — RIVER-88: implementation done
 
 Added `GET /v1/metrics/names` endpoint to `river-query-api` (backed by VictoriaMetrics `/api/v1/label/__name__/values`); added `getMetricNames()` to the Dart API client; built `MetricsPage` with two sub-tabs ("All Metrics" list with multi-select, "Graph" with `CustomPainter`-based time-series chart); added tab bar slot to `TopPanel`; registered Metrics nav item in the sidebar.
+
+### 2026-05-17 — RIVER-91: implementation done
+
+Replaced all manual `serde_json::Value` field extraction in `river-query-api/src/clickhouse.rs` with typed intermediate structs (`ChLogRow`, `ChSpanRow`, `ChHistogramRow`, `ChFacetValueRow`) and a generic `query_typed<T: DeserializeOwned>` helper. `From` impls handle field renaming and unit conversions (duration_ns → duration_ms, ClickHouse datetime → RFC3339). All 70 existing tests pass unchanged.

@@ -1,0 +1,90 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(mise run ci:sonar-scan *)",
+      "Bash(mise run ci:sonar-check *)",
+      "Bash(mise run ci:sonar-scan)",
+      "Bash(mise run ci:sonar-check)",
+      "Bash(mise run ci:flutter-test *)",
+      "Bash(mise run ci:flutter-test)",
+      "Bash(mise run agent:check-impl-pr *)",
+      "Bash(mise run agent:check-impl-pr)",
+      "Bash(mise run agent:check-duplication *)",
+      "Bash(mise run agent:check-duplication)",
+      "Bash(mise run agent:calculate-usage *)",
+      "Bash(mise run agent:calculate-usage)",
+      "Bash(mise run agent:sonar-issues *)",
+      "Bash(mise run agent:sonar-issues)",
+      "Bash(mise run agent:spec-impl *)",
+      "Bash(mise run agent:spec-impl)",
+      "Bash(mise run flutter:coverage *)",
+      "Bash(mise run flutter:coverage)",
+      "Bash(mise run flutter:client *)",
+      "Bash(mise run flutter:client)",
+      "Bash(export SONAR_TOKEN=* && mise run ci:sonar-scan *)",
+      "Bash(export SONAR_TOKEN=* && mise run ci:sonar-check *)",
+      "Bash(export SONAR_TOKEN=* && mise run ci:sonar-scan)",
+      "Bash(export SONAR_TOKEN=* && mise run ci:sonar-check)",
+      "Bash(export SONAR_TOKEN=* && mise run agent:sonar-issues *)",
+      "Bash(export SONAR_TOKEN=* && mise run agent:sonar-issues)",
+      "Bash(curl -s \"https://sonarcloud.io/api/*\")",
+      "Bash(git push *)",
+      "Bash(git push)",
+      "Bash(git checkout *)",
+      "Bash(git fetch *)",
+      "Bash(git fetch)",
+      "Bash(gh pr create *)",
+      "Bash(gh pr ready *)",
+      "Bash(gh pr edit *)",
+      "Bash(gh pr merge *)",
+      "Bash(gh issue create *)",
+      "Bash(mise exec -- cargo fmt *)",
+      "Bash(mise exec -- cargo fmt)",
+      "Bash(mise exec -- cargo clippy *)",
+      "Bash(mise exec -- cargo clippy)",
+      "Bash(mise exec -- cargo test *)",
+      "Bash(mise exec -- cargo test)",
+      "Bash(mise exec -- cargo build *)",
+      "Bash(mise exec -- cargo build)",
+      "Bash(mise exec -- cargo check *)",
+      "Bash(mise exec -- cargo check)",
+      "Bash(mise exec -- flutter test *)",
+      "Bash(mise exec -- flutter test)",
+      "Bash(mise exec -- flutter build *)",
+      "Bash(mise exec -- flutter build)",
+      "Bash(export SONAR_TOKEN=* && mise exec -- cargo *)",
+      "Bash(chmod +x *)",
+      "Bash(mise run ci:cargo-coverage-summary *)",
+      "Bash(mise run ci:cargo-coverage-summary)"
+    ]
+  },
+  "hooks": {
+    "PreToolUse": [
+      {
+        "matcher": "Read",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "{ ROOT=$(git rev-parse --show-toplevel 2>/dev/null) && BIN=\"$ROOT/target/release/river-index\" && [ -x \"$BIN\" ] && \"$BIN\" --db \"$ROOT/.river-index/index.db\" --root \"$ROOT\" hook; } || true"
+          }
+        ]
+      }
+    ],
+    "PostToolUse": [
+      {
+        "matcher": "Bash",
+        "hooks": [
+          {
+            "type": "command",
+            "command": "jq -r '.tool_input.command' | { read -r cmd; if echo \"$cmd\" | grep -q '^git commit' && ! echo \"$cmd\" | grep -q 'git push'; then git push origin HEAD 2>&1; fi; } || true",
+            "statusMessage": "Auto-pushing after commit..."
+          },
+          {
+            "type": "command",
+            "command": "{ ROOT=$(git rev-parse --show-toplevel 2>/dev/null) && BIN=\"$ROOT/target/release/river-index\" && [ -x \"$BIN\" ] && \"$BIN\" --db \"$ROOT/.river-index/index.db\" --root \"$ROOT\" post-commit-hook; } || true"
+          }
+        ]
+      }
+    ]
+  }
+}

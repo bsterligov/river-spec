@@ -1,4 +1,4 @@
-# Token Usage — updated 2026-05-17
+# Token Usage — updated 2026-05-18
 
 **RTKSaved** = tokens removed by RTK compression before reaching Claude (avoided context, on top of billed input).
 
@@ -95,18 +95,27 @@
 | 05-17 07:45 | fa2b3a6b | 56 | 50,510 | 1,393,224 | 12,949 | 35 | 2,360 | spec: RIVER-82 -- Fix code quality issues from codebase audit (#83) |
 | 05-17 08:09 | 38c37d7a | 24,821 | 327,199 | 15,349,067 | 44,597 | 137 | 662 | impl: RIVER-82 (#84) |
 | 05-17 11:32 | 92a9c121 | 211 | 229,692 | 10,179,805 | 93,037 | 167 | 2,899 | docs: update workflow |
-| **Total** | — | **51,305** | **15,290,575** | **638,855,357** | **4,690,538** | **8815** | **399,205** | — |
+| 05-17 11:40 | 59aa64d5 | 104 | 86,009 | 3,237,270 | 22,525 | 80 | 1,820 | docs: tokes usage |
+| 05-17 12:30 | cd833f98 | 55 | 38,408 | 935,754 | 5,798 | 34 | 175 | spec: RIVER-85 -- Fix column filter popup position in logs and traces views |
+| 05-17 12:40 | bbdf9e3e | 123 | 146,524 | 7,181,835 | 28,092 | 112 | 541 | impl: RIVER-85 (#87) |
+| 05-17 12:43 | cb2615ff | 16 | 11,970 | 272,951 | 3,163 | 12 | 0 | docs: auto implement issue |
+| 05-17 12:55 | 96cd070c | 120 | 50,887 | 2,667,566 | 14,193 | 80 | 554 | spec: RIVER-88 -- Implement metrics page with list and graph sub-tabs (#89) |
+| 05-17 13:40 | b74bc7bc | 334 | 389,646 | 27,573,330 | 106,075 | 300 | 4,108 | impl: RIVER-88 -- Implement metrics page with list and graph sub-tabs (#90) |
+| 05-17 17:44 | 3ddc4800 | 52 | 80,016 | 1,481,480 | 6,886 | 34 | 775 | spec: RIVER-91 -- Replace manual serde_json::Value field extraction with ty |
+| 05-17 18:34 | 8bf5a8e0 | 259 | 417,830 | 19,499,386 | 62,860 | 203 | 15,255 | refactor: RIVER-91 -- replace manual serde_json::Value extraction with type |
+| 05-17 20:18 | 9d9333e9 | 81 | 46,244 | 1,489,308 | 9,953 | 51 | 832 | spec: RIVER-94 -- Add facet filter for traces in logs page (#95) |
+| **Total** | — | **52,449** | **16,558,109** | **703,194,237** | **4,950,083** | **9721** | **423,265** | — |
 
 ## Weekly Cost
 
 | Week | Input | CacheC | CacheR | Output | Turns | Cost |
 |------|------:|-------:|-------:|-------:|------:|-----:|
 | 2026-W19 | 15,674 | 6,448,818 | 191,312,718 | 2,438,148 | 2972 | $118.20 |
-| 2026-W20 | 35,631 | 8,841,757 | 447,542,639 | 2,252,390 | 5843 | $201.31 |
-| **Total** | **51,305** | **15,290,575** | **638,855,357** | **4,690,538** | **8815** | **$319.51** |
+| 2026-W20 | 36,775 | 10,109,291 | 511,881,519 | 2,511,935 | 6749 | $229.26 |
+| **Total** | **52,449** | **16,558,109** | **703,194,237** | **4,950,083** | **9721** | **$347.46** |
 
 ## Notes
 
 - Pricing: Sonnet 4.6 — $3.00/1M input, $3.75/1M cache write, $0.30/1M cache read, $15.00/1M output
-- **Total estimated cost: $319.5082**
+- **Total estimated cost: $347.4598**
 - RTKSaved = tokens removed from tool results before being fed back as context (not billed, but avoided context inflation)

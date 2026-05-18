@@ -108,8 +108,8 @@ Cost and stability. Claude Code Pro is a flat subscription with no per-token bil
 | Week | Cost | Turns |
 |------|-----:|------:|
 | [2026-W19](docs/week-2026-W19.md) | $118.20 | 2972 |
-| [2026-W20](docs/week-2026-W20.md) | $201.31 | 5843 |
-| **Total** | **$319.51** | **8815** |
+| [2026-W20](docs/week-2026-W20.md) | $229.26 | 6749 |
+| **Total** | **$347.46** | **9721** |
 
 Full breakdown: [docs/token-usage.md](docs/token-usage.md)
 

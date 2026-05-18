@@ -30,3 +30,4 @@ Status lives here — not in filenames. Done tasks stay in the list (marked with
 - ~~RIVER-88: Implement metrics page with list and graph sub-tabs~~
 - ~~RIVER-91: Replace manual serde_json::Value field extraction with typed ClickHouse row structs~~
 - ~~RIVER-94: Add facet filter for traces~~
+- RIVER-97: Infinite Scroll for Traces and Logs

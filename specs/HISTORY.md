@@ -172,3 +172,7 @@ Added `GET /v1/metrics/names` endpoint to `river-query-api` (backed by VictoriaM
 ### 2026-05-17 — RIVER-91: implementation done
 
 Replaced all manual `serde_json::Value` field extraction in `river-query-api/src/clickhouse.rs` with typed intermediate structs (`ChLogRow`, `ChSpanRow`, `ChHistogramRow`, `ChFacetValueRow`) and a generic `query_typed<T: DeserializeOwned>` helper. `From` impls handle field renaming and unit conversions (duration_ns → duration_ms, ClickHouse datetime → RFC3339). All 70 existing tests pass unchanged.
+
+### 2026-05-17 — RIVER-94: implementation done
+
+Added `GET /v1/traces/facets` to `river-query-api` (queries `service_name` and `operation_name` from `traces`, mirrors logs facets shape); regenerated Dart API client to include `getTracesFacets`; extracted `FacetDataSource` abstract interface so `FacetPanel` works with both `LogsController` and `TracesController`; extracted `CollapsibleFacetPanel` to a shared widget; wired the facet panel into `TracesPage` with the same collapsible pattern as `LogsPage`; added `rangeVersion` to `TracesController`; 4 new BDD tests in `traces_facet_panel_test.dart` covering all spec scenarios.

@@ -8,7 +8,7 @@ BIN="$ROOT/target/release/river-index"
 
 if [[ ! -x "$BIN" ]]; then
     echo "Building river-index release binary..."
-    cargo build -p river-index --release
+    cargo build -p river-index --release --manifest-path "$ROOT/Cargo.toml"
 fi
 
 "$BIN" --db "$ROOT/.river-index/index.db" --root "$ROOT" index

@@ -1,0 +1,48 @@
+#!/usr/bin/env python3
+#MISE description="Start child agents for pack manifests that became status: ready (supervisor -> child)"
+"""
+Compares runs/*/*/manifest.yaml between BEFORE and AFTER and, for each manifest whose status
+changed to `ready`, triggers the child's gh-aw workflow:
+
+  gh workflow run implement.lock.yml -R <repo> -f task=<task> -f pack=<dir> -f spec_ref=<AFTER>
+
+Env: GH_TOKEN (actions:write on the child repos), BEFORE, AFTER, optional MANIFEST to force one.
+"""
+import os, re, subprocess, sys
+
+ZERO = "0" * 40
+
+def git(*args, check=True):
+    return subprocess.run(["git", *args], capture_output=True, text=True, check=check).stdout
+
+def field(text, name):
+    m = re.search(rf"^{name}:\s*['\"]?([^'\"#\n]+?)['\"]?\s*(#.*)?$", text or "", re.M)
+    return m.group(1).strip() if m else None
+
+def changed_manifests(before, after):
+    if not before or before == ZERO:
+        return git("ls-tree", "-r", "--name-only", after, "runs").split()
+    return git("diff", "--name-only", before, after, "--", "runs").split()
+
+def main():
+    after = os.environ.get("AFTER") or git("rev-parse", "HEAD").strip()
+    before = os.environ.get("BEFORE", "")
+    forced = os.environ.get("MANIFEST", "").strip()
+    paths = [forced] if forced else [p for p in changed_manifests(before, after)
+                                     if re.fullmatch(r"runs/[^/]+/[^/]+/manifest\.yaml", p)]
+    started = 0
+    for path in paths:
+        new = git("show", f"{after}:{path}", check=False)
+        old = git("show", f"{before}:{path}", check=False) if before and before != ZERO else ""
+        if field(new, "status") != "ready" or (not forced and field(old, "status") == "ready"):
+            continue
+        repo, task = field(new, "repo"), field(new, "task")
+        pack = os.path.dirname(path)
+        print(f"dispatch {task} -> {repo} ({pack})")
+        subprocess.run(["gh", "workflow", "run", "implement.lock.yml", "-R", repo,
+                        "-f", f"task={task}", "-f", f"pack={pack}", "-f", f"spec_ref={after}"], check=True)
+        started += 1
+    print(f"started {started} child run(s)")
+
+if __name__ == "__main__":
+    sys.exit(main())

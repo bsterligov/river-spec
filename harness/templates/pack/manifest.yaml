@@ -1,0 +1,14 @@
+# runs/<TASK>/<repo>/manifest.yaml — written by pack.md, advanced by sweep.md, read by the child agent.
+task: RIVER-N                    # spec id
+title: "Short task title"
+repo: bsterligov/<repo>          # target child repo (from stack.yaml)
+layer: 1                         # from stack.yaml
+status: waiting                  # waiting -> ready -> dispatched -> done | blocked
+branch: impl/river-n             # branch the child agent pushes to
+base: main
+needs: {}                        # contract name -> value, filled when the layer becomes ready
+produces: []                     # contract names the child must report in its PR `## Outputs`
+allowed-files: ["**"]            # globs the child may touch
+checks: []                       # commands that must pass before the PR (from stack.yaml)
+skills: []                       # skill folders copied into this pack under skills/
+done-when: "Observable condition from the spec Goal"

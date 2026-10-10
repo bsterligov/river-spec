@@ -1,0 +1,41 @@
+name: Dispatch packs
+
+# Supervisor -> child: when a merged [pack] or [sweep] PR sets a manifest to `ready`,
+# start the child's gh-aw `implement` workflow with that pack. Not an agent: plain automation.
+
+on:
+  push:
+    branches: [main]
+    paths: ['runs/**/manifest.yaml']
+  workflow_dispatch:
+    inputs:
+      manifest:
+        description: "Force one manifest, e.g. runs/RIVER-123/river-query/manifest.yaml"
+        required: true
+        type: string
+
+env:
+  MISE_AUTO_INSTALL: false
+
+jobs:
+  dispatch:
+    name: Start child agents
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+    steps:
+      - uses: actions/checkout@v6
+        with:
+          fetch-depth: 0
+
+      - uses: jdx/mise-action@v4
+        with:
+          install_args: python
+
+      - name: dispatch ready manifests
+        run: mise run harness:dispatch
+        env:
+          GH_TOKEN: ${{ secrets.RIVER_DISPATCH_TOKEN }}
+          BEFORE: ${{ github.event.before }}
+          AFTER: ${{ github.sha }}
+          MANIFEST: ${{ inputs.manifest }}

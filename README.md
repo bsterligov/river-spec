@@ -33,7 +33,7 @@ Existing tools like OpenSpec, SpecKit, and similar spec-authoring frameworks wer
 
 ## How it works
 
-Three workflow versions exist, each building on the previous. Full details: [V0 — Single task](docs/v0.md) · [V1 — Ambitious features](docs/v1.md) · [V1.1 — Workflow refinements](docs/v1.1.md)
+Four workflow versions exist, each building on the previous. Full details: [V0 — Single task](docs/v0.md) · [V1 — Ambitious features](docs/v1.md) · [V1.1 — Workflow refinements](docs/v1.1.md) · [V2 — Supervisor and code-only repos](docs/v2.md)
 
 ### V0 — Single task
 
@@ -60,6 +60,13 @@ V1.1 tightens quality gates and reduces CI noise without adding new commands.
 | Mise tasks reorganized | Tasks moved from nested dirs (`cargo/`, `flutter/`, `sonar/`, etc.) to two flat buckets: `ci/` for stateless validation, `agent/` for agentic and developer workflow tasks. | The old structure mixed tasks with different lifecycles in the same namespace. `flutter:run` (local dev) sat next to `flutter:coverage` (CI). The new split makes the intent of each task immediately clear and lets CI jobs reference `ci:*` exclusively. |
 
 Full details: [docs/v1.1.md](docs/v1.1.md)
+
+### V2 — Supervisor and code-only repos
+
+The monorepo is split. This repo (`river-spec`) holds specs, contracts, skills, memory and agent workflows; each
+code repo (river-common, river-ingest, river-query, river-ui, river-infra) holds only code and one generic gh-aw
+workflow. A merged spec becomes per-repo context packs, child agents implement them layer by layer, and a sweep
+records results and releases the next layer. Full details: [V2](docs/v2.md)
 
 ---
 

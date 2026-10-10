@@ -4,7 +4,7 @@ import os, hashlib, collections, sys
 
 WINDOW = 8
 
-def rs_files(root="src"):
+def rs_files(root=sys.argv[1] if len(sys.argv) > 1 else "."):
     for dp, _, fs in os.walk(root):
         if "target" in dp:
             continue

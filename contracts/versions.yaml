@@ -1,0 +1,6 @@
+# Current value of every contract a layer can produce or need.
+# Only the supervisor (sweep.md) updates this file, from merged child PRs.
+river_config_tag: "0.1.0"       # river-common git tag consumed via Cargo git dependency
+clickhouse_schema: V003         # latest migration in river-ingest/river-ingestion/migrations/clickhouse
+s3_key_schema: "{signal}/{service}/{timestamp}-{uuid}.pb"
+openapi: contracts/openapi.json # copy of GET /openapi.json from river-query-api

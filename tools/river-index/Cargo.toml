@@ -3,8 +3,9 @@ name = "river-index"
 version = "0.1.0"
 edition = "2021"
 
-[lints]
-workspace = true
+[lints.clippy]
+unwrap_used = "warn"
+expect_used = "warn"
 
 [[bin]]
 name = "river-index"

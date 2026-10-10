@@ -76,7 +76,7 @@ Ask the user:
 
 > "Do you want me to implement this directly? I'll write the spec, get it reviewed, and start implementation once it's approved."
 
-If the user says **no** (or does not respond), stop here. The user will run `/spec` and `/spec-dev` manually.
+If the user says **no** (or does not respond), stop here. The user will run `/spec` manually; merging the spec PR starts packing (`pack.md`).
 
 If the user says **yes**, continue to Step 6.
 
@@ -150,4 +150,4 @@ git checkout main
 git pull origin main
 ```
 
-Then run the `/spec-dev` skill to implement the spec. `/spec-dev` will locate the impl branch (created by GHA on spec PR merge), check it out, implement the spec, and open the impl PR.
+Merging the spec PR triggers the `Compile context packs` workflow (`pack.md`), which opens a `[pack]` PR with one context pack per affected child repo. Tell the user to review and merge it; merging dispatches the child agents (see `docs/v2.md`). Implementation does not happen in this repo.

@@ -1,0 +1,57 @@
+# River stack: the only file that knows every child repo.
+# Read by pack.md (to compile packs), dispatch (to start child agents) and sweep.md (to advance layers).
+# A layer starts only when every `needs` value it lists is present in contracts/versions.yaml.
+
+owner: bsterligov
+base_branch: main
+
+repos:
+  river-common:
+    repo: bsterligov/river-common
+    layer: 1
+    lang: rust
+    owns: "river-config crate: env-only configuration shared by all Rust services"
+    skills: [rust-quality, mise-tasks]
+    checks: ["mise run ci:cargo-fmt-check", "mise run ci:cargo-clippy", "mise run ci:cargo-test"]
+    needs: []
+    produces: [river_config_tag]
+
+  river-ingest:
+    repo: bsterligov/river-ingest
+    layer: 2
+    lang: rust
+    owns: "river-sidecar (OTLP/gRPC -> S3 buffer), river-ingestion (S3 -> ClickHouse/VictoriaMetrics), ClickHouse migrations"
+    skills: [rust-quality, mise-tasks]
+    checks: ["mise run ci:cargo-fmt-check", "mise run ci:cargo-clippy", "mise run ci:cargo-test"]
+    needs: [river_config_tag]
+    produces: [clickhouse_schema, s3_key_schema]
+
+  river-query:
+    repo: bsterligov/river-query
+    layer: 3
+    lang: rust
+    owns: "river-query-api: HTTP query layer, filter DSL, OpenAPI spec"
+    skills: [rust-quality, mise-tasks]
+    checks: ["mise run ci:cargo-fmt-check", "mise run ci:cargo-clippy", "mise run ci:cargo-test"]
+    needs: [river_config_tag, clickhouse_schema]
+    produces: [openapi]
+
+  river-ui:
+    repo: bsterligov/river-ui
+    layer: 4
+    lang: flutter
+    owns: "macOS Flutter dashboard and generated Dart API client"
+    skills: [flutter, mise-tasks]
+    checks: ["mise run ci:flutter-analyze", "mise run ci:flutter-test"]
+    needs: [openapi]
+    produces: []
+
+  river-infra:
+    repo: bsterligov/river-infra
+    layer: 4
+    lang: compose
+    owns: "docker-compose dev stack, Grafana provisioning and dashboards, .NET demo app"
+    skills: [mise-tasks]
+    checks: ["docker compose config -q"]
+    needs: [clickhouse_schema]
+    produces: []

@@ -32,6 +32,8 @@ tools:
   github:
     toolsets: [repos, issues, pull_requests]
 safe-outputs:
+  threat-detection:
+    engine: false   # gemini cannot run detection; keep the non-AI checks only
   create-pull-request:
     title-prefix: "[pack] "
     labels: [pack]

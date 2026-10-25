@@ -20,6 +20,8 @@ tools:
   github:
     toolsets: [repos, pull_requests, actions]
 safe-outputs:
+  threat-detection:
+    engine: false   # gemini cannot run detection; keep the non-AI checks only
   create-pull-request:
     title-prefix: "[sweep] "
     labels: [sweep]

@@ -10,7 +10,7 @@ permissions:
   contents: read
   pull-requests: read
   actions: read
-engine: claude
+engine: gemini
 timeout-minutes: 30
 tools:
   edit:

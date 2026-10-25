@@ -20,7 +20,7 @@ permissions:
   contents: read
   pull-requests: read
   issues: read
-engine: claude
+engine: gemini
 timeout-minutes: 30
 concurrency:
   job-discriminator: ${{ inputs.task || github.event.pull_request.number }}

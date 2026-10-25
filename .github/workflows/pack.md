@@ -22,6 +22,7 @@ permissions:
   issues: read
 engine:
   id: gemini
+  model: gemini-2.5-flash   # Pro models have no free-tier quota
   version: "0.43.0"   # gemini-cli >=0.55 fails auth behind the gh-aw API proxy (github/gh-aw#58445)
 timeout-minutes: 30
 concurrency:

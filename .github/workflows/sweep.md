@@ -10,7 +10,9 @@ permissions:
   contents: read
   pull-requests: read
   actions: read
-engine: gemini
+engine:
+  id: gemini
+  version: "0.43.0"   # gemini-cli >=0.55 fails auth behind the gh-aw API proxy (github/gh-aw#58445)
 timeout-minutes: 30
 tools:
   edit:
